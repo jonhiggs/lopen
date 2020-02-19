@@ -9,5 +9,5 @@ BROWSER="$(command -v firefox)"
 
 case $(input_type "$1") in
   file) open_file "$1" ;;
-  url)  open_url "$1" ;;
+  *)    open_url "$1" ;;
 esac
