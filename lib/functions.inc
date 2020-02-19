@@ -8,10 +8,6 @@ input_type() {
   fi
 }
 
-get_command() {
-  echo "${mailcap}" | awk -F: -v M='text/markdown' '($1~M) {print $2 }'
-}
-
 mimetype() {
   mimetype=$(file --mime-type "$1" | awk -F: '{gsub(/^ +/,"", $2);print $2}')
   extension=${1##*.}
@@ -26,6 +22,10 @@ mimetype() {
   esac
 
   echo "${mimetype}"
+}
+
+get_command() {
+  echo "${mailcap}" | awk -F: -v M='text/markdown' '($1~M) {print $2 }'
 }
 
 unwrap_file() {

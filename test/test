@@ -2,7 +2,11 @@
 source $(dirname $0)/../lib/functions.inc
 
 function oneTimeSetUp() {
+  TXTSYMLINK=$(dirname $0)/testfiles/symlink.txt
   TXTFILE=$(dirname $0)/testfiles/test.txt
+  MDFILE=$(dirname $0)/testfiles/test.md
+  MKDFILE=$(dirname $0)/testfiles/test.mkd
+  MARKDOWNFILE=$(dirname $0)/testfiles/test.markdown
 }
 
 function testInputType() {
@@ -18,6 +22,14 @@ function testInputType() {
   assertTrue   "https://"                       "input_type 'ftp://www.google.com'"
 
   assertTrue "http://" "input_type 'http://www.google.com'"
+}
+
+function testMimetype() {
+  assertEquals "$(basename ${TXTFILE})"       "text/plain"    "$(mimetype "${TXTFILE}")"
+  assertEquals "$(basename ${MDFILE})"        "text/markdown" "$(mimetype "${MDFILE}")"
+  assertEquals "$(basename ${MKDFILE})"       "text/markdown" "$(mimetype "${MKDFILE}")"
+  assertEquals "$(basename ${MARKDOWNFILE})"  "text/markdown" "$(mimetype "${MARKDOWNFILE}")"
+  assertEquals "$(basename ${TXTSYMLINK})"    "text/plain"    "$(mimetype "${TXTSYMLINK}")"
 }
 
 # load and run shUnit2
