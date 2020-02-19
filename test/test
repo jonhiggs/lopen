@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 source $(dirname $0)/../lib/functions.inc
 
+BROWSER="my_browser"
+
 function oneTimeSetUp() {
   MAILCAP_FILE=$(dirname $0)/testfiles/mailcap
   TXTSYMLINK=$(dirname $0)/testfiles/symlink.txt
@@ -35,9 +37,16 @@ function testMimetype() {
   assertEquals "$(basename ${TXTSYMLINK})"    "text/plain"    "$(mimetype "${TXTSYMLINK}")"
 }
 
-testGetCommand() {
-  assertEquals "text/markdown"  "markdown_cmd %s"   "$(get_command 'text/markdown')"
-  assertEquals "text/plain"     "plaintext_cmd %s"  "$(get_command 'text/plain')"
+testMailcapCmd() {
+  assertEquals "text/markdown"  "markdown_cmd %s"   "$(mailcap_cmd 'text/markdown')"
+  assertEquals "text/plain"     "plaintext_cmd %s"  "$(mailcap_cmd 'text/plain')"
+}
+
+testCmd() {
+  assertEquals "${MDFILE}"              "markdown_cmd ${MDFILE}"            "$(cmd ${MDFILE})"
+  assertEquals "${TXTFILE}"             "plaintext_cmd ${TXTFILE}"          "$(cmd ${TXTFILE})"
+  assertEquals "http://www.google.com"  "${BROWSER} http://www.google.com"  "$(cmd "http://www.google.com")"
+  assertEquals "blah://nothing"         ""                                  "$(cmd "blah://nothing")"
 }
 
 # load and run shUnit2

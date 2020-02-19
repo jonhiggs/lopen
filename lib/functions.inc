@@ -31,8 +31,20 @@ mimetype() {
   echo "${mimetype}"
 }
 
-get_command() {
+mailcap_cmd() {
   cat ${MAILCAP_FILE} | awk -F\; -v M="$1" '($1~M) { gsub(/^ +/, "", $2); print $2 }'
+}
+
+cmd() {
+  local t
+  t=$(input_type $1 2> /dev/null)
+  [[ -z $t ]] && return 1
+  if [[ $t == "file" ]]; then
+    mailcap_cmd $(mimetype $1) \
+      | awk -v file=$1 '{gsub(/%s/,file,$0)}; {print}'
+  else
+    echo "${BROWSER} $1"
+  fi
 }
 
 unwrap_file() {
