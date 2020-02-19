@@ -10,18 +10,19 @@ function oneTimeSetUp() {
 }
 
 function testInputType() {
-  assertEquals "existent file"      "file"      "$(input_type ${TXTFILE})"
-  assertTrue   "existent file returns true"     "input_type ${TXTFILE}"
-  assertEquals "nonexistent file"   ""          "$(input_type xxx)"
-  assertFalse  "nonexistent file returns false" "input_type xxx"
+  assertEquals "existent file"      "file"              "$(input_type ${TXTFILE})"
+  assertTrue   "existent file returns true"             "input_type ${TXTFILE}"
+  assertEquals "nonexistent file"   ""                  "$(input_type xxx)"
+  assertFalse  "nonexistent file returns false"         "input_type xxx"
 
-  assertEquals "http://"            "url"       "$(input_type "http://www.google.com")"
-  assertEquals "ftp://"             "url"       "$(input_type "ftp://www.google.com")"
-  assertTrue   "ftp://"                         "input_type 'https://www.google.com'"
-  assertEquals "https://"           "url"       "$(input_type "https://www.google.com")"
-  assertTrue   "https://"                       "input_type 'ftp://www.google.com'"
-
-  assertTrue "http://" "input_type 'http://www.google.com'"
+  assertEquals "http://"            "http"              "$(input_type "http://www.google.com")"
+  assertEquals "ftp://"             "ftp"               "$(input_type "ftp://www.google.com")"
+  assertEquals "https://"           "https"             "$(input_type "https://www.google.com")"
+  assertEquals "blah://"            "unknown protocol"  "$(input_type "blah://www.google.com" 2>&1)"
+  assertTrue   "https:// status"                        "input_type 'https://www.google.com'"
+  assertTrue   "http:// status"                         "input_type 'http://www.google.com'"
+  assertTrue   "ftp:// status"                          "input_type 'ftp://www.google.com'"
+  assertFalse  "blah:// status"                         "input_type 'blah://www.google.com'"
 }
 
 function testMimetype() {

@@ -2,7 +2,11 @@ input_type() {
   if [[ -f "$1" ]]; then
     echo "file"
   elif [[ "$1" =~ ^[a-z]+:\/\/ ]]; then
-    echo "url"
+    protocol=$(echo $1 | awk -F'://' '{ print $1 }')
+    case ${protocol} in
+      http|https|ftp) echo ${protocol} ;;
+      *)              echo "unknown protocol" >&2; return 1 ;;
+    esac
   else
     return 1
   fi
