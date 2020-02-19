@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+source $(dirname $0)/../lib/functions.inc
+
+### END FRONTMATTER ###
+set -e
+
+BROWSER="$(command -v firefox)"
+
+mailcap=$(cat <<EOF
+text/markdown: something
+EOF
+)
+
+case $(input_type "$1") in
+  file) open_file "$1" ;;
+  url)  open_url "$1" ;;
+esac
