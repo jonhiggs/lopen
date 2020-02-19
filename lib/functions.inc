@@ -24,8 +24,13 @@ mimetype() {
   echo "${mimetype}"
 }
 
+mailcap() {
+  echo "text/markdown; markdown_cmd %s"
+  echo "text/plain; plaintext_cmd %s"
+}
+
 get_command() {
-  echo "${mailcap}" | awk -F: -v M='text/markdown' '($1~M) {print $2 }'
+  mailcap | awk -F\; -v M="$1" '($1~M) { gsub(/^ +/, "", $2); print $2 }'
 }
 
 unwrap_file() {

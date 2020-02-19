@@ -32,6 +32,11 @@ function testMimetype() {
   assertEquals "$(basename ${TXTSYMLINK})"    "text/plain"    "$(mimetype "${TXTSYMLINK}")"
 }
 
+testGetCommand() {
+  assertEquals "text/markdown"  "markdown_cmd %s"   "$(get_command 'text/markdown')"
+  assertEquals "text/plain"     "plaintext_cmd %s"  "$(get_command 'text/plain')"
+}
+
 # load and run shUnit2
 source $(dirname $0)/shunit/src/shunit2
 
