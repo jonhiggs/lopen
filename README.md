@@ -8,3 +8,4 @@ Takes a [mailcap](http://manpages.ubuntu.com/manpages/xenial/man5/mailcap.5.html
 ## Configuration
 
 `${BROWSER}` is used to open URLs
+`${SUPPORTED_SCHEMES}` are schemes that are sent to `${BROWSER}`

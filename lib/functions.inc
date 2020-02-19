@@ -1,12 +1,14 @@
+SUPPORTED_SCHEMES=(http https ftp)
+
 input_type() {
   if [[ -f "$1" ]]; then
     echo "file"
   elif [[ "$1" =~ ^[a-z]+:\/\/ ]]; then
-    protocol=$(echo $1 | awk -F'://' '{ print $1 }')
-    case ${protocol} in
-      http|https|ftp) echo ${protocol} ;;
-      *)              echo "unknown protocol" >&2; return 1 ;;
-    esac
+    for s in ${SUPPORTED_SCHEMES[@]}; do
+      [[ $s == $(echo $1 | awk -F'://' '{print $1}') ]] && echo $s && return 0
+    done
+    echo "unknown protocol" >&2
+    return 1
   else
     return 1
   fi
