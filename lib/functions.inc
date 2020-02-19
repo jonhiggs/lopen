@@ -1,3 +1,4 @@
+BROWSER="$(command -v firefox)"
 SUPPORTED_SCHEMES=(http https ftp)
 
 input_type() {
