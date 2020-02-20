@@ -49,9 +49,4 @@ if [[ "${input_type}" == "file" ]]; then
   ${LOPEN_SHOW_MIMETYPE} && echo "mimetype:	${mimetype}"
 fi
 
-if ! ${LOPEN_DRY}; then
-  case "${input_type}" in
-    file) open_file "$f" ;;
-    *)    open_url "$f" ;;
-  esac
-fi
+! ${LOPEN_DRY} && $(cmd $f)

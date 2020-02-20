@@ -58,25 +58,3 @@ unwrap_file() {
   [[ -f $f ]] || return 1
   echo "$f"
 }
-
-open_url() {
-  local p
-  p=$(echo "$1" | awk -F: '{ print $1 }')
-  case $p in
-    http|https) ${BROWSER} "$1" ;;
-    *) echo "Unsupported protocol '$p'." ;;
-  esac
-}
-
-open_file() {
-  local file
-  local mimetype
-
-  file=$(unwrap_file "$1")
-  mimetype=$(mimetype "${file}")
-
-  case ${mimetype} in
-    'text/markdown') mailcap_cmd "${mimetype}" ;;
-    *) echo "Unsupported mimetype '${mimetype}'." ;;
-  esac
-}
