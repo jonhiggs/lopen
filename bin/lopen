@@ -6,20 +6,25 @@ source "$(dirname "$0")"/../lib/functions.inc
 set -e
 
 LOPEN_CONFIG_DIR="${LOPEN_CONFIG_DIR:-${XDG_CONFIG_HOME}/lopen}"
+LOPEN_CONFIG="${LOPEN_CONFIG_DIR}/config"
+LOPEN_FILETYPES="${LOPEN_CONFIG_DIR}/filetypes"
+LOPEN_BROWSER="${LOPEN_BROWSER:-${BROWSER}}"
+LOPEN_DRY=false
 LOPEN_MAILCAP_FILE="${LOPEN_MAILCAP_FILE:-${LOPEN_CONFIG_DIR}/mailcap}"
+LOPEN_SCHEMES=(http https ftp)
 LOPEN_SHOW_COMMAND=false
 LOPEN_SHOW_MIMETYPE=false
-LOPEN_DRY=false
+
+[[ -f ${LOPEN_CONFIG} ]] && source ${LOPEN_CONFIG}
 
 help() {
   echo "$(basename "$0") [options] <file>"
+  echo "  -C   dump configuration"
   echo "  -c   show command"
   echo "  -h   help"
   echo "  -m   show mimetype"
   echo "  -n   dry run"
   echo "  -v   verbose"
-  echo
-  echo "LOPEN_CONFIG_DIR: ${LOPEN_CONFIG_DIR}"
 }
 
 if [[ $# -gt 1 ]]; then
@@ -37,6 +42,8 @@ fi
 [[ $a =~ [mv] ]] && LOPEN_SHOW_MIMETYPE=true
 [[ $a =~ [cv] ]] && LOPEN_SHOW_COMMAND=true
 [[ $a =~ [n] ]]  && LOPEN_DRY=true
+
+[[ $a =~ [C] ]]  && dump_config && exit 0
 
 input_type=$(input_type "$f")
 mimetype=$(mimetype "$f")

@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 source $(dirname $0)/../lib/functions.inc
 
-BROWSER="my_browser"
+LOPEN_BROWSER="my_browser"
+LOPEN_SCHEMES=(http https ftp)
 
 function oneTimeSetUp() {
   LOPEN_MAILCAP_FILE=$(dirname $0)/testfiles/mailcap
+  LOPEN_FILETYPES=$(dirname $0)/testfiles/filetypes
   TXTSYMLINK=$(dirname $0)/testfiles/symlink.txt
   TXTFILE=$(dirname $0)/testfiles/test.txt
   MDFILE=$(dirname $0)/testfiles/test.md
@@ -12,7 +14,7 @@ function oneTimeSetUp() {
   MARKDOWNFILE=$(dirname $0)/testfiles/test.markdown
 }
 
-function testInputType() {
+testInputType() {
   assertEquals "existent file"      "file"              "$(input_type ${TXTFILE})"
   assertEquals "nonexistent file"   ""                  "$(input_type xxx)"
   assertEquals "http://"            "http"              "$(input_type "http://www.google.com")"
@@ -29,7 +31,7 @@ function testInputType() {
   assertFalse  "blah:// status"                         "input_type 'blah://www.google.com' >&/dev/null"
 }
 
-function testMimetype() {
+testMimetype() {
   assertEquals "$(basename ${TXTFILE})"       "text/plain"    "$(mimetype "${TXTFILE}")"
   assertEquals "$(basename ${MDFILE})"        "text/markdown" "$(mimetype "${MDFILE}")"
   assertEquals "$(basename ${MKDFILE})"       "text/markdown" "$(mimetype "${MKDFILE}")"

@@ -1,0 +1,2 @@
+# extensions associated with mimetypes
+text/markdown: .md .mkd .markdown
