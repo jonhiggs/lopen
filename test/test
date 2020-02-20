@@ -50,6 +50,6 @@ testCmd() {
 }
 
 # load and run shUnit2
-source $(dirname $0)/shunit/src/shunit2
+source $(dirname $0)/../vendor/shunit.inc
 
 # vim: ai ts=2 sw=2 et sts=2 ft=sh
