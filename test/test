@@ -51,6 +51,14 @@ testCmd() {
   assertEquals "blah://nothing"         ""                                  "$(cmd "blah://nothing")"
 }
 
+testMimetypeForFiletype() {
+  assertEquals ".md"              "text/markdown"           "$(mimetype_for_filetype test.md)"
+  assertEquals ".mkd"             "text/markdown"           "$(mimetype_for_filetype test.mkd)"
+  assertEquals ".markdown"        "text/markdown"           "$(mimetype_for_filetype test.markdown)"
+  assertEquals ".m"               ""                        "$(mimetype_for_filetype test.m)"
+  assertEquals ".g"               ""                        "$(mimetype_for_filetype test.g)"
+}
+
 # load and run shUnit2
 source $(dirname $0)/../vendor/shunit.inc
 
