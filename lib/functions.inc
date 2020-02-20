@@ -5,7 +5,7 @@ dump_config() {
     echo "LOPEN_CONFIG_DIR:	${LOPEN_CONFIG_DIR}"
     echo "LOPEN_DRY:	${LOPEN_DRY}"
     echo "LOPEN_MAILCAP_FILE:	${LOPEN_MAILCAP_FILE}"
-    echo "LOPEN_SCHEMES:	${LOPEN_SCHEMES[@]}"
+    echo "LOPEN_SCHEMES:	${LOPEN_SCHEMES[*]}"
     echo "LOPEN_SHOW_COMMAND:	${LOPEN_SHOW_COMMAND}"
     echo "LOPEN_SHOW_MIMETYPE:	${LOPEN_SHOW_MIMETYPE}"
   ) | column -t -s"	"

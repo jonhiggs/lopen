@@ -15,7 +15,7 @@ LOPEN_SCHEMES=(http https ftp)
 LOPEN_SHOW_COMMAND=false
 LOPEN_SHOW_MIMETYPE=false
 
-[[ -f ${LOPEN_CONFIG} ]] && source ${LOPEN_CONFIG}
+[[ -f ${LOPEN_CONFIG} ]] && source "${LOPEN_CONFIG}"
 
 help() {
   echo "$(basename "$0") [options] <file>"
@@ -56,4 +56,4 @@ if [[ "${input_type}" == "file" ]]; then
   ${LOPEN_SHOW_MIMETYPE} && echo "mimetype:	${mimetype}"
 fi
 
-! ${LOPEN_DRY} && $(cmd $f)
+! ${LOPEN_DRY} && $(cmd "$f")
