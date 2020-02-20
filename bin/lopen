@@ -5,25 +5,54 @@ source "$(dirname "$0")"/../lib/functions.inc
 ### END FRONTMATTER ###
 set -e
 
+LOPEN_CONFIG_DIR="${LOPEN_CONFIG_DIR:-${XDG_CONFIG_HOME}/lopen}"
+LOPEN_MAILCAP_FILE="${LOPEN_MAILCAP_FILE:-${LOPEN_CONFIG_DIR}/mailcap}"
+LOPEN_SHOW_COMMAND=false
+LOPEN_SHOW_MIMETYPE=false
+LOPEN_DRY=false
+
 help() {
   echo "$(basename "$0") [options] <file>"
+  echo "  -c   show command"
   echo "  -h   help"
-  echo "  -m   print mimetype"
+  echo "  -m   show mimetype"
+  echo "  -n   dry run"
+  echo "  -v   verbose"
+  echo
+  echo "LOPEN_CONFIG_DIR: ${LOPEN_CONFIG_DIR}"
 }
 
-f=${!#}
-a=$(echo "${@%$f}" | tr -d "[:blank:]-")
-
-[[ $a =~ h ]] && help && exit 0
-[[ $a =~ m ]] && SHOW_MIMETYPE=true && OPEN=false
-
-if ${SHOW_MIMETYPE}; then
-  if [[ "$(input_type "$f")" =~ "file" ]]; then
-    mimetype $f
+if [[ $# -gt 1 ]]; then
+  f=${!#}
+  a=$(echo -- "${@%$f}" | tr -d "[:blank:]-")
+else
+  if [[ ${!#} =~ ^- ]]; then
+    a=$1
+  else
+    f=$1
   fi
 fi
 
-if ${OPEN}; then
+[[ $a =~ [h] ]] && help && exit 0
+[[ $a =~ [mv] ]] && LOPEN_SHOW_MIMETYPE=true
+[[ $a =~ [cv] ]] && LOPEN_SHOW_COMMAND=true
+[[ $a =~ [n] ]] && LOPEN_DRY=true
+
+if ${LOPEN_SHOW_COMMAND}; then
+  if [[ "$(input_type "$f")" =~ "file" ]]; then
+    echo -n "command:	"
+    mailcap_cmd "$(mimetype "$f")"
+  fi
+fi
+
+if ${LOPEN_SHOW_MIMETYPE}; then
+  if [[ "$(input_type "$f")" =~ "file" ]]; then
+    echo -n "mimetype:	"
+    mimetype "$f"
+  fi
+fi
+
+if ! ${LOPEN_DRY}; then
   case $(input_type "$f") in
     file) open_file "$f" ;;
     *)    open_url "$f" ;;

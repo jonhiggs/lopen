@@ -1,0 +1,3 @@
+text/markdown; markdown_cmd %s
+text/plain; plaintext_cmd %s
+

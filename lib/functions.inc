@@ -36,7 +36,7 @@ mimetype() {
 mailcap_cmd() {
   awk -F\; -v M="$1" \
     '($1~M) {gsub(/^ +/, "", $2); print $2}' \
-    < "${MAILCAP_FILE}"
+    < "${LOPEN_MAILCAP_FILE}"
 }
 
 cmd() {
@@ -76,7 +76,7 @@ open_file() {
   mimetype=$(mimetype "${file}")
 
   case ${mimetype} in
-    'text/markdown') get_command "${mimetype}" ;;
+    'text/markdown') mailcap_cmd "${mimetype}" ;;
     *) echo "Unsupported mimetype '${mimetype}'." ;;
   esac
 }

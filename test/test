@@ -4,7 +4,7 @@ source $(dirname $0)/../lib/functions.inc
 BROWSER="my_browser"
 
 function oneTimeSetUp() {
-  MAILCAP_FILE=$(dirname $0)/testfiles/mailcap
+  LOPEN_MAILCAP_FILE=$(dirname $0)/testfiles/mailcap
   TXTSYMLINK=$(dirname $0)/testfiles/symlink.txt
   TXTFILE=$(dirname $0)/testfiles/test.txt
   MDFILE=$(dirname $0)/testfiles/test.md
