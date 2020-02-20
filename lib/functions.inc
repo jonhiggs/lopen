@@ -61,7 +61,7 @@ unwrap_file() {
 
 open_url() {
   local p
-  p=$(echo "$1" | awk -F: '{ print $1 }') in
+  p=$(echo "$1" | awk -F: '{ print $1 }')
   case $p in
     http|https) ${BROWSER} "$1" ;;
     *) echo "Unsupported protocol '$p'." ;;
