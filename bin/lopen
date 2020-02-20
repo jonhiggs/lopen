@@ -33,27 +33,24 @@ else
   fi
 fi
 
-[[ $a =~ [h] ]] && help && exit 0
+[[ $a =~ [h] ]]  && help && exit 0
 [[ $a =~ [mv] ]] && LOPEN_SHOW_MIMETYPE=true
 [[ $a =~ [cv] ]] && LOPEN_SHOW_COMMAND=true
-[[ $a =~ [n] ]] && LOPEN_DRY=true
+[[ $a =~ [n] ]]  && LOPEN_DRY=true
 
-if ${LOPEN_SHOW_COMMAND}; then
-  if [[ "$(input_type "$f")" =~ "file" ]]; then
-    echo -n "command:	"
-    mailcap_cmd "$(mimetype "$f")"
-  fi
-fi
+input_type=$(input_type "$f")
+mimetype=$(mimetype "$f")
+mailcap_cmd=$(mailcap_cmd "$mimetype")
+cmd=$(cmd "$f")
 
-if ${LOPEN_SHOW_MIMETYPE}; then
-  if [[ "$(input_type "$f")" =~ "file" ]]; then
-    echo -n "mimetype:	"
-    mimetype "$f"
-  fi
+${LOPEN_SHOW_COMMAND} && echo "command:	${cmd}"
+if [[ "${input_type}" == "file" ]]; then
+  ${LOPEN_SHOW_COMMAND} && echo "mailcap:	${mailcap_cmd}"
+  ${LOPEN_SHOW_MIMETYPE} && echo "mimetype:	${mimetype}"
 fi
 
 if ! ${LOPEN_DRY}; then
-  case $(input_type "$f") in
+  case "${input_type}" in
     file) open_file "$f" ;;
     *)    open_url "$f" ;;
   esac
