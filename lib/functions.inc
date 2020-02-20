@@ -34,7 +34,9 @@ mimetype() {
 }
 
 mailcap_cmd() {
-  awk -F\; -v M="$1" '($1~M) {gsub(/^ +/, "", $2); print $2}' < "${MAILCAP_FILE}"
+  awk -F\; -v M="$1" \
+    '($1~M) {gsub(/^ +/, "", $2); print $2}' \
+    < "${MAILCAP_FILE}"
 }
 
 cmd() {
