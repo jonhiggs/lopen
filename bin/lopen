@@ -1,32 +1,31 @@
 #!/usr/bin/env bash
-source $(dirname $0)/../lib/functions.inc
+# shellcheck source=../lib/functions.inc.sh
+source "$(dirname "$0")"/../lib/functions.inc
 
 ### END FRONTMATTER ###
 set -e
 
-open_url() {
-  local p
-  p=$(echo "$1" | awk -F: '{ print $1 }') in
-  case $p in
-    http|https) ${BROWSER} "$1" ;;
-    *) echo "Unsupported protocol '$p'." ;;
-  esac
+help() {
+  echo "$(basename "$0") [options] <file>"
+  echo "  -h   help"
+  echo "  -m   print mimetype"
 }
 
-open_file() {
-  local file
-  local mimetype
+f=${!#}
+a=$(echo "${@%$f}" | tr -d "[:blank:]-")
 
-  file=$(unwrap_file "$1")
-  mimetype=$(mimetype "${file}")
+[[ $a =~ h ]] && help && exit 0
+[[ $a =~ m ]] && SHOW_MIMETYPE=true && OPEN=false
 
-  case ${mimetype} in
-    'text/markdown') get_command ${mimetype} ;;
-    *) echo "Unsupported mimetype '${mimetype}'." ;;
+if ${SHOW_MIMETYPE}; then
+  if [[ "$(input_type "$f")" =~ "file" ]]; then
+    mimetype $f
+  fi
+fi
+
+if ${OPEN}; then
+  case $(input_type "$f") in
+    file) open_file "$f" ;;
+    *)    open_url "$f" ;;
   esac
-}
-
-case $(input_type "$1") in
-  file) open_file "$1" ;;
-  *)    open_url "$1" ;;
-esac
+fi
