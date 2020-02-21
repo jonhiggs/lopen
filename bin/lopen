@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck source=../lib/functions.inc.sh
 source "$(dirname "$0")"/../lib/functions.inc
+VERSION="[dev]"
 
 ### END FRONTMATTER ###
 set -e
@@ -25,6 +26,11 @@ help() {
   echo "  -m   show mimetype"
   echo "  -n   dry run"
   echo "  -v   verbose"
+  echo "  -V   version"
+}
+
+version() {
+  echo "lopen version ${VERSION}"
 }
 
 if [[ $# -gt 1 ]]; then
@@ -39,6 +45,7 @@ else
 fi
 
 [[ $a =~ [h] ]]  && help && exit 0
+[[ $a =~ [V] ]]  && version && exit 0
 [[ $a =~ [mv] ]] && LOPEN_SHOW_MIMETYPE=true
 [[ $a =~ [cv] ]] && LOPEN_SHOW_COMMAND=true
 [[ $a =~ [n] ]]  && LOPEN_DRY=true
