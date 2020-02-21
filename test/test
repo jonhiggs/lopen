@@ -12,6 +12,7 @@ function oneTimeSetUp() {
   MDFILE=$(dirname $0)/testfiles/test.md
   MKDFILE=$(dirname $0)/testfiles/test.mkd
   MARKDOWNFILE=$(dirname $0)/testfiles/test.markdown
+  NFOFILE=$(dirname $0)/testfiles/test.nfo
 }
 
 testInputType() {
@@ -36,6 +37,7 @@ testMimetype() {
   assertEquals "$(basename ${MDFILE})"        "text/markdown" "$(mimetype "${MDFILE}")"
   assertEquals "$(basename ${MKDFILE})"       "text/markdown" "$(mimetype "${MKDFILE}")"
   assertEquals "$(basename ${MARKDOWNFILE})"  "text/markdown" "$(mimetype "${MARKDOWNFILE}")"
+  assertEquals "$(basename ${NFOFILE})"       "text/plain"    "$(mimetype "${NFOFILE}")"
   assertEquals "$(basename ${TXTSYMLINK})"    "text/plain"    "$(mimetype "${TXTSYMLINK}")"
 }
 
@@ -51,12 +53,13 @@ testCmd() {
   assertEquals "blah://nothing"         ""                                  "$(cmd "blah://nothing")"
 }
 
-testMimetypeForFiletype() {
-  assertEquals ".md"              "text/markdown"           "$(mimetype_for_filetype test.md)"
-  assertEquals ".mkd"             "text/markdown"           "$(mimetype_for_filetype test.mkd)"
-  assertEquals ".markdown"        "text/markdown"           "$(mimetype_for_filetype test.markdown)"
-  assertEquals ".m"               ""                        "$(mimetype_for_filetype test.m)"
-  assertEquals ".g"               ""                        "$(mimetype_for_filetype test.g)"
+testForcedMimetype() {
+  assertEquals ".md"              "text/markdown"           "$(forced_mimetype test.md)"
+  assertEquals ".mkd"             "text/markdown"           "$(forced_mimetype test.mkd)"
+  assertEquals ".markdown"        "text/markdown"           "$(forced_mimetype test.markdown)"
+  assertEquals ".nfo"             "text/plain"              "$(forced_mimetype test.nfo)"
+  assertEquals ".m"               ""                        "$(forced_mimetype test.m)"
+  assertEquals ".g"               ""                        "$(forced_mimetype test.g)"
 }
 
 # load and run shUnit2

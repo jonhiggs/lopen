@@ -1,4 +1,4 @@
-VERSION := 0.0.0
+VERSION := 0.0.1
 
 target/lopen: lib/functions.inc bin/lopen .FORCE
 	echo '#!/usr/bin/env bash' >$@

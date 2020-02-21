@@ -30,11 +30,14 @@ input_type() {
   return 1
 }
 
-mimetype_for_filetype() {
-  awk -v E=".${1##*.}" '($1==E) {print $2}' < "${LOPEN_FILETYPES}"
+forced_mimetype() {
+  t=$(awk -v E=".${1##*.}" '($1==E) {print $2}' < "${LOPEN_FILETYPES}")
+  [[ -z "$t" ]] && return 1
+  echo "$t"
 }
 
 mimetype() {
+  forced_mimetype "$1" && return 0
   mimetype=$(file --mime-type "$1" | awk -F: '{gsub(/^ +/,"", $2);print $2}')
   extension=${1##*.}
 
