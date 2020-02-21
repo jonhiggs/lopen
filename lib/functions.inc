@@ -59,6 +59,12 @@ mailcap_cmd() {
     < "${LOPEN_MAILCAP_FILE}"
 }
 
+mailcap_flags() {
+  awk -F\; -v M="$1" \
+    '($1~M) {gsub(/^ +/, "", $3); print $3}' \
+    < "${LOPEN_MAILCAP_FILE}"
+}
+
 cmd() {
   local t
   t=$(input_type "$1" 2> /dev/null)

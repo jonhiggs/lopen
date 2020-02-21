@@ -1,3 +1,2 @@
-text/markdown; markdown_cmd %s
+text/markdown; markdown_cmd %s; copiousoutput
 text/plain; plaintext_cmd %s
-

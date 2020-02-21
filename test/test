@@ -46,6 +46,11 @@ testMailcapCmd() {
   assertEquals "text/plain"     "plaintext_cmd %s"  "$(mailcap_cmd 'text/plain')"
 }
 
+testMailcapFlags() {
+  assertEquals "text/markdown"  "copiousoutput"   "$(mailcap_flags 'text/markdown')"
+  assertEquals "text/plain"     ""                "$(mailcap_flags 'text/plain')"
+}
+
 testCmd() {
   assertEquals "${MDFILE}"              "markdown_cmd ${MDFILE}"            "$(cmd ${MDFILE})"
   assertEquals "${TXTFILE}"             "plaintext_cmd ${TXTFILE}"          "$(cmd ${TXTFILE})"
