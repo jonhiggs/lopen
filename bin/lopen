@@ -63,4 +63,8 @@ if [[ "${input_type}" == "file" ]]; then
   ${LOPEN_SHOW_MIMETYPE} && echo "mimetype:	${mimetype}"
 fi
 
-! ${LOPEN_DRY} && $(cmd "$f")
+if ! ${LOPEN_DRY}; then
+  $(cmd "$f")
+else
+  true
+fi
