@@ -54,7 +54,7 @@ testMailcapFlags() {
 }
 
 testCmd() {
-  assertEquals "${MDFILE}"              "markdown_cmd ${MDFILE}"            "$(cmd ${MDFILE})"
+  assertEquals "${MDFILE}"              "markdown_cmd ${MDFILE}|less"            "$(cmd ${MDFILE})"
   assertEquals "${TXTFILE}"             "plaintext_cmd ${TXTFILE}"          "$(cmd ${TXTFILE})"
   assertEquals "http://www.google.com"  "${BROWSER} http://www.google.com"  "$(cmd "http://www.google.com")"
   assertEquals "blah://nothing"         ""                                  "$(cmd "blah://nothing")"
