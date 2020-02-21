@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 source $(dirname $0)/../lib/functions.inc
 
+LOPEN_PAGER="less"
+
 LOPEN_BROWSER="my_browser"
 LOPEN_SCHEMES=(http https ftp)
 
