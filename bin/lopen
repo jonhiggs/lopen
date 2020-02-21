@@ -10,7 +10,7 @@ LOPEN_CONFIG_DIR="${LOPEN_CONFIG_DIR:-${XDG_CONFIG_HOME}/lopen}"
 LOPEN_CONFIG="${LOPEN_CONFIG_DIR}/config"
 LOPEN_FILETYPES="${LOPEN_CONFIG_DIR}/filetypes"
 LOPEN_BROWSER="${LOPEN_BROWSER:-${BROWSER}}"
-LOPEN_PAGER="${LOPEN_PAGER:-${PAGER}}"
+LOPEN_PAGER="${LOPEN_PAGER:-${PAGER:-less}}"
 LOPEN_DRY=false
 LOPEN_MAILCAP_FILE="${LOPEN_MAILCAP_FILE:-${LOPEN_CONFIG_DIR}/mailcap}"
 LOPEN_SCHEMES=(http https ftp)
@@ -65,7 +65,7 @@ if [[ "${input_type}" == "file" ]]; then
 fi
 
 if ! ${LOPEN_DRY}; then
-  $(cmd "$f")
+  bash -c "$(cmd "$f")"
 else
   true
 fi
