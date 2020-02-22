@@ -12,7 +12,7 @@ file_mimetype() {
   local mimetype
   local extension
 
-  forced_mimetype "$1" && return 0
+  _file_forced_mimetype "$1" && return 0
   mimetype=$(file --mime-type "$1" | awk -F: '{gsub(/^ +/,"", $2);print $2}')
   extension=${1##*.}
 
@@ -27,4 +27,10 @@ file_mimetype() {
   esac
 
   echo "${mimetype}"
+}
+
+_file_forced_mimetype() {
+  t=$(awk -v E=".${1##*.}" '($1==E) {print $2}' < "${LOPEN_FILETYPES}")
+  [[ -z "$t" ]] && return 1
+  echo "$t"
 }

@@ -62,13 +62,13 @@ testCmd() {
   assertEquals "blah://nothing"         ""                                  "$(cmd "blah://nothing")"
 }
 
-testForcedMimetype() {
-  assertEquals ".md"              "text/markdown"           "$(forced_mimetype test.md)"
-  assertEquals ".mkd"             "text/markdown"           "$(forced_mimetype test.mkd)"
-  assertEquals ".markdown"        "text/markdown"           "$(forced_mimetype test.markdown)"
-  assertEquals ".nfo"             "text/plain"              "$(forced_mimetype test.nfo)"
-  assertEquals ".m"               ""                        "$(forced_mimetype test.m)"
-  assertEquals ".g"               ""                        "$(forced_mimetype test.g)"
+testFileForcedMimetype() {
+  assertEquals ".md"              "text/markdown"           "$(_file_forced_mimetype test.md)"
+  assertEquals ".mkd"             "text/markdown"           "$(_file_forced_mimetype test.mkd)"
+  assertEquals ".markdown"        "text/markdown"           "$(_file_forced_mimetype test.markdown)"
+  assertEquals ".nfo"             "text/plain"              "$(_file_forced_mimetype test.nfo)"
+  assertEquals ".m"               ""                        "$(_file_forced_mimetype test.m)"
+  assertEquals ".g"               ""                        "$(_file_forced_mimetype test.g)"
 }
 
 # load and run shUnit2

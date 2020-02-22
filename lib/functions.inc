@@ -46,12 +46,6 @@ input_type() {
   return 1
 }
 
-forced_mimetype() {
-  t=$(awk -v E=".${1##*.}" '($1==E) {print $2}' < "${LOPEN_FILETYPES}")
-  [[ -z "$t" ]] && return 1
-  echo "$t"
-}
-
 cmd() {
   local t
   local c
