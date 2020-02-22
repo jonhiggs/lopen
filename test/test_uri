@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+source $(dirname $0)/../lib/uri.inc
+
+function oneTimeSetUp() {
+  #LOPEN_MAILCAP_FILE=$(dirname $0)/testfiles/mailcap
+  #LOPEN_FILETYPES=$(dirname $0)/testfiles/filetypes
+  LOPEN_BROWSER="my_browser"
+  LOPEN_SCHEMES=(http https ftp)
+}
+
+testUriValidScheme() {
+  assertTrue  "http"     "_uri_valid_scheme http"
+  assertTrue  "https"    "_uri_valid_scheme https"
+  assertTrue  "ftp"      "_uri_valid_scheme ftp"
+  assertFalse "other"    "_uri_valid_scheme other"
+}
+
+testUriScheme() {
+  assertEquals "http://www.google.com"   "http"   "$(_uri_scheme http://www.google.com)"
+  assertEquals "https://www.google.com"  "https"  "$(_uri_scheme https://www.google.com)"
+  assertEquals "ftp://www.google.com"    "ftp"    "$(_uri_scheme ftp://www.google.com)"
+  assertEquals "other://www.google.com"  "other"  "$(_uri_scheme other://www.google.com)"
+  assertEquals "www.google.com"          "http"  "$(_uri_scheme www.google.com)"
+}
+
+#testFileForcedMimetype() {
+#  assertEquals ".md"              "text/markdown"           "$(_file_forced_mimetype test.md)"
+#  assertEquals ".mkd"             "text/markdown"           "$(_file_forced_mimetype test.mkd)"
+#  assertEquals ".markdown"        "text/markdown"           "$(_file_forced_mimetype test.markdown)"
+#  assertEquals ".nfo"             "text/plain"              "$(_file_forced_mimetype test.nfo)"
+#  assertEquals ".m"               ""                        "$(_file_forced_mimetype test.m)"
+#  assertEquals ".g"               ""                        "$(_file_forced_mimetype test.g)"
+#}
+#
+#testFileCmd() {
+#  c="file_cmd"
+#  assertEquals "plaintext_cmd %s"     "plaintext_cmd ${TXTFILE}"   "$($c ${TXTFILE})"
+#  assertEquals "mimetype_cmd %t %s"   "mimetype_cmd application/msword ${DOCFILE}"   "$($c ${DOCFILE})"
+#}
+
+source $(dirname $0)/../vendor/shunit.inc

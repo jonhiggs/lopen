@@ -36,13 +36,6 @@ testInputType() {
   assertFalse  "blah:// status"                         "input_type 'blah://www.google.com' >&/dev/null"
 }
 
-testCmd() {
-  assertEquals "${MDFILE}"              "markdown_cmd ${MDFILE}|less"            "$(cmd ${MDFILE})"
-  assertEquals "${TXTFILE}"             "plaintext_cmd ${TXTFILE}"          "$(cmd ${TXTFILE})"
-  assertEquals "http://www.google.com"  "${BROWSER} http://www.google.com"  "$(cmd "http://www.google.com")"
-  assertEquals "blah://nothing"         ""                                  "$(cmd "blah://nothing")"
-}
-
 # load and run shUnit2
 source $(dirname $0)/../vendor/shunit.inc
 

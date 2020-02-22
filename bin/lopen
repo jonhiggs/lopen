@@ -3,6 +3,7 @@
 source "$(dirname "$0")"/../lib/functions.inc
 source "$(dirname "$0")"/../lib/mailcap.inc
 source "$(dirname "$0")"/../lib/file.inc
+source "$(dirname "$0")"/../lib/uri.inc
 
 VERSION="[dev]"
 
@@ -42,9 +43,16 @@ fi
 [[ $a =~ [C] ]]  && dump_config && exit 0
 
 input_type=$(input_type "$f")
-mimetype=$(mimetype "$f")
-mailcap_cmd=$(mailcap_cmd "$mimetype")
-cmd=$(cmd "$f")
+
+if [[ "${input_type}" -eq "file" ]]; then
+  cmd=$(file_cmd "$f")
+  mimetype=$(file_mimetype "$f")
+  mailcap_cmd=$(mailcap_cmd "$mimetype")
+else
+  cmd="$(uri_cmd "$f")"
+  mimetype="N/A"
+  mailcap_cmd="N/A"
+fi
 
 ${LOPEN_SHOW_COMMAND} && echo "command:	${cmd}"
 if [[ "${input_type}" == "file" ]]; then
@@ -53,7 +61,7 @@ if [[ "${input_type}" == "file" ]]; then
 fi
 
 if ! ${LOPEN_DRY}; then
-  bash -c "$(cmd "$f")"
+  bash -c "${cmd}"
 else
   true
 fi

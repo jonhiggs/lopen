@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+source $(dirname $0)/../lib/functions.inc
+source $(dirname $0)/../lib/mailcap.inc
+source $(dirname $0)/../lib/file.inc
+
+LOPEN_PAGER="less"
+LOPEN_BROWSER="my_browser"
+LOPEN_SCHEMES=(http https ftp)
+
+function oneTimeSetUp() {
+  LOPEN_MAILCAP_FILE=$(dirname $0)/testfiles/mailcap
+  LOPEN_FILETYPES=$(dirname $0)/testfiles/filetypes
+
+  ROOT_DIR="$(dirname $0)/../"
+  CMD="${ROOT_DIR}/bin/lopen"
+  export LOPEN_CONFIG_DIR="${ROOT_DIR}/test/testfiles"
+}
+
+testConfiguration() {
+  assertEquals "LOPEN_CONFIG"       "testfiles"         "$(${CMD} -C | awk -F'/' '/LOPEN_CONFIG:/ { print $(NF-1) }')"
+}
+
+testNonExistentFile() {
+  f="${ROOT_DIR}/xxx"
+  assertEquals "empty response"   ""       "$(${CMD} $f)"
+  assertFalse  "exit status"               "${CMD} $f"
+}
+
+testReadmeMd() {
+  f="${ROOT_DIR}/README.md"
+  assertEquals "command"     "markdown_cmd ${f}|less"   "$(${CMD} -nv $f | awk -F: '/^command:/ { gsub(/^\s*/, "", $2); print $2 }')"
+  assertEquals "mailcap"     "markdown_cmd %s"          "$(${CMD} -nv $f | awk -F: '/^mailcap:/ { gsub(/^\s*/, "", $2); print $2 }')"
+  assertEquals "mimetype"    "text/markdown"            "$(${CMD} -nv $f | awk -F: '/^mimetype:/ { gsub(/^\s*/, "", $2); print $2 }')"
+  assertTrue   "exit status"                            "${CMD} -nv $f"
+}
+
+testHttpURL() {
+  url="http://www.google.com/"
+  assertEquals "command"     "${LOPEN_BROWSER} ${url}"  "$(${CMD} -nv ${url} | awk -F: '/^command:/ { gsub(/^\s*/, "", $2); print $2 }')"
+  #assertEquals "mailcap"     "markdown_cmd %s"          "$(${CMD} -nv $f | awk -F: '/^mailcap:/ { gsub(/^\s*/, "", $2); print $2 }')"
+  #assertEquals "mimetype"    "text/markdown"            "$(${CMD} -nv $f | awk -F: '/^mimetype:/ { gsub(/^\s*/, "", $2); print $2 }')"
+  #assertTrue   "exit status"                            "${CMD} -nv $f"
+}
+
+#  assertEquals "nonexistent file"   ""                  "$(input_type xxx)"
+#  assertEquals "http://"            "http"              "$(input_type "http://www.google.com")"
+#  assertEquals "ftp://"             "ftp"               "$(input_type "ftp://www.google.com")"
+#  assertEquals "https://"           "https"             "$(input_type "https://www.google.com")"
+#  assertEquals "blah:// stderr"     "unknown protocol"  "$(input_type "blah://www.google.com" 2>&1)"
+#  assertEquals "blah:// stdout"     ""                  "$(input_type "blah://www.google.com" 2>/dev/null)"
+#
+#  assertTrue   "existent file returns true"             "input_type ${TXTFILE}"
+#  assertFalse  "nonexistent file returns false"         "input_type xxx"
+#  assertTrue   "https:// status"                        "input_type 'https://www.google.com'"
+#  assertTrue   "http:// status"                         "input_type 'http://www.google.com'"
+#  assertTrue   "ftp:// status"                          "input_type 'ftp://www.google.com'"
+#  assertFalse  "blah:// status"                         "input_type 'blah://www.google.com' >&/dev/null"
+
+
+# load and run shUnit2
+source $(dirname $0)/../vendor/shunit.inc
+
+# vim: ai ts=2 sw=2 et sts=2 ft=sh

@@ -2,6 +2,7 @@
 source $(dirname $0)/../lib/file.inc
 
 function oneTimeSetUp() {
+  LOPEN_MAILCAP_FILE=$(dirname $0)/testfiles/mailcap
   LOPEN_FILETYPES=$(dirname $0)/testfiles/filetypes
   TXTSYMLINK=$(dirname $0)/testfiles/symlink.txt
   TXTFILE=$(dirname $0)/testfiles/test.txt
@@ -9,6 +10,7 @@ function oneTimeSetUp() {
   MKDFILE=$(dirname $0)/testfiles/test.mkd
   MARKDOWNFILE=$(dirname $0)/testfiles/test.markdown
   NFOFILE=$(dirname $0)/testfiles/test.nfo
+  DOCFILE=$(dirname $0)/testfiles/test.doc
 }
 
 testFileMimetype() {
@@ -27,6 +29,12 @@ testFileForcedMimetype() {
   assertEquals ".nfo"             "text/plain"              "$(_file_forced_mimetype test.nfo)"
   assertEquals ".m"               ""                        "$(_file_forced_mimetype test.m)"
   assertEquals ".g"               ""                        "$(_file_forced_mimetype test.g)"
+}
+
+testFileCmd() {
+  c="file_cmd"
+  assertEquals "plaintext_cmd %s"     "plaintext_cmd ${TXTFILE}"   "$($c ${TXTFILE})"
+file  assertEquals "mimetype_cmd %t %s"   "mimetype_cmd application/msword ${DOCFILE}"   "$($c ${DOCFILE})"
 }
 
 source $(dirname $0)/../vendor/shunit.inc

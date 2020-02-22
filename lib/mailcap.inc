@@ -6,7 +6,13 @@ mailcap_cmd() {
         FS=";"
       }
 
-      (M~pattern) { wildcard_result=$2 }
+      {
+        pattern=$1
+        gsub(/*/,".*", pattern)
+        gsub(/\//,"\\/", pattern)
+      }
+
+      (M~pattern) { wildcard_result=$2}
       (M==$1)     { exact_result=$2 }
 
       END {
@@ -23,5 +29,3 @@ mailcap_flags() {
     '($1~M) {gsub(/^ +/, "", $3); print $3}' \
     < "${LOPEN_MAILCAP_FILE}"
 }
-
-

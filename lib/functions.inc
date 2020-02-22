@@ -45,19 +45,3 @@ input_type() {
   fi
   return 1
 }
-
-cmd() {
-  local t
-  local c
-  local m
-  t=$(input_type "$1" 2> /dev/null)
-  [[ -z $t ]] && return 1
-  if [[ $t == "file" ]]; then
-    m=$(file_mimetype "$1")
-    c="$(mailcap_cmd "$m" | awk -v file="$1" '{gsub(/%s/,file,$0)}; {print}')"
-    [[ $(mailcap_flags "$m") =~ copiousoutput ]] && c+="|${LOPEN_PAGER}"
-    echo "$c"
-  else
-    echo "${BROWSER} $1"
-  fi
-}
