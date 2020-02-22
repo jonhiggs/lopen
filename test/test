@@ -36,39 +36,11 @@ testInputType() {
   assertFalse  "blah:// status"                         "input_type 'blah://www.google.com' >&/dev/null"
 }
 
-testFileMimetype() {
-  assertEquals "$(basename ${TXTFILE})"       "text/plain"    "$(file_mimetype "${TXTFILE}")"
-  assertEquals "$(basename ${MDFILE})"        "text/markdown" "$(file_mimetype "${MDFILE}")"
-  assertEquals "$(basename ${MKDFILE})"       "text/markdown" "$(file_mimetype "${MKDFILE}")"
-  assertEquals "$(basename ${MARKDOWNFILE})"  "text/markdown" "$(file_mimetype "${MARKDOWNFILE}")"
-  assertEquals "$(basename ${NFOFILE})"       "text/plain"    "$(file_mimetype "${NFOFILE}")"
-  assertEquals "$(basename ${TXTSYMLINK})"    "text/plain"    "$(file_mimetype "${TXTSYMLINK}")"
-}
-
-testMailcapCmd() {
-  assertEquals "text/markdown"  "markdown_cmd %s"   "$(mailcap_cmd 'text/markdown')"
-  assertEquals "text/plain"     "plaintext_cmd %s"  "$(mailcap_cmd 'text/plain')"
-}
-
-testMailcapFlags() {
-  assertEquals "text/markdown"  "copiousoutput"   "$(mailcap_flags 'text/markdown')"
-  assertEquals "text/plain"     ""                "$(mailcap_flags 'text/plain')"
-}
-
 testCmd() {
   assertEquals "${MDFILE}"              "markdown_cmd ${MDFILE}|less"            "$(cmd ${MDFILE})"
   assertEquals "${TXTFILE}"             "plaintext_cmd ${TXTFILE}"          "$(cmd ${TXTFILE})"
   assertEquals "http://www.google.com"  "${BROWSER} http://www.google.com"  "$(cmd "http://www.google.com")"
   assertEquals "blah://nothing"         ""                                  "$(cmd "blah://nothing")"
-}
-
-testFileForcedMimetype() {
-  assertEquals ".md"              "text/markdown"           "$(_file_forced_mimetype test.md)"
-  assertEquals ".mkd"             "text/markdown"           "$(_file_forced_mimetype test.mkd)"
-  assertEquals ".markdown"        "text/markdown"           "$(_file_forced_mimetype test.markdown)"
-  assertEquals ".nfo"             "text/plain"              "$(_file_forced_mimetype test.nfo)"
-  assertEquals ".m"               ""                        "$(_file_forced_mimetype test.m)"
-  assertEquals ".g"               ""                        "$(_file_forced_mimetype test.g)"
 }
 
 # load and run shUnit2

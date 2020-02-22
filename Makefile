@@ -11,5 +11,7 @@ target/lopen: lib/functions.inc bin/lopen .FORCE
 .PHONY: test
 test:
 	./test/test
+	./test/test_file
+	./test/test_mailcap
 
 .FORCE:

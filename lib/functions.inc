@@ -61,4 +61,3 @@ cmd() {
     echo "${BROWSER} $1"
   fi
 }
-

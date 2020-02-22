@@ -1,13 +1,5 @@
 # these functions expect a file as input
 
-#unwrap_file() {
-#  local f
-#  f=$1
-#  while [[ -S "$f" ]]; do f=$(readlink "$f"); done
-#  [[ -f $f ]] || return 1
-#  echo "$f"
-#}
-
 file_mimetype() {
   local mimetype
   local extension

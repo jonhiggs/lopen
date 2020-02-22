@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+source $(dirname $0)/../lib/file.inc
+
+function oneTimeSetUp() {
+  LOPEN_FILETYPES=$(dirname $0)/testfiles/filetypes
+  TXTSYMLINK=$(dirname $0)/testfiles/symlink.txt
+  TXTFILE=$(dirname $0)/testfiles/test.txt
+  MDFILE=$(dirname $0)/testfiles/test.md
+  MKDFILE=$(dirname $0)/testfiles/test.mkd
+  MARKDOWNFILE=$(dirname $0)/testfiles/test.markdown
+  NFOFILE=$(dirname $0)/testfiles/test.nfo
+}
+
+testFileMimetype() {
+  assertEquals "$(basename ${TXTFILE})"       "text/plain"    "$(file_mimetype "${TXTFILE}")"
+  assertEquals "$(basename ${MDFILE})"        "text/markdown" "$(file_mimetype "${MDFILE}")"
+  assertEquals "$(basename ${MKDFILE})"       "text/markdown" "$(file_mimetype "${MKDFILE}")"
+  assertEquals "$(basename ${MARKDOWNFILE})"  "text/markdown" "$(file_mimetype "${MARKDOWNFILE}")"
+  assertEquals "$(basename ${NFOFILE})"       "text/plain"    "$(file_mimetype "${NFOFILE}")"
+  assertEquals "$(basename ${TXTSYMLINK})"    "text/plain"    "$(file_mimetype "${TXTSYMLINK}")"
+}
+
+testFileForcedMimetype() {
+  assertEquals ".md"              "text/markdown"           "$(_file_forced_mimetype test.md)"
+  assertEquals ".mkd"             "text/markdown"           "$(_file_forced_mimetype test.mkd)"
+  assertEquals ".markdown"        "text/markdown"           "$(_file_forced_mimetype test.markdown)"
+  assertEquals ".nfo"             "text/plain"              "$(_file_forced_mimetype test.nfo)"
+  assertEquals ".m"               ""                        "$(_file_forced_mimetype test.m)"
+  assertEquals ".g"               ""                        "$(_file_forced_mimetype test.g)"
+}
+
+source $(dirname $0)/../vendor/shunit.inc

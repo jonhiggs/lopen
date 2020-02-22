@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+source $(dirname $0)/../lib/mailcap.inc
+
+function oneTimeSetUp() {
+  LOPEN_MAILCAP_FILE=$(dirname $0)/testfiles/mailcap
+}
+
+testMailcapCmd() {
+  assertEquals "text/markdown"  "markdown_cmd %s"   "$(mailcap_cmd 'text/markdown')"
+  assertEquals "text/plain"     "plaintext_cmd %s"  "$(mailcap_cmd 'text/plain')"
+}
+
+testMailcapFlags() {
+  assertEquals "text/markdown"  "copiousoutput"   "$(mailcap_flags 'text/markdown')"
+  assertEquals "text/plain"     ""                "$(mailcap_flags 'text/plain')"
+}
+
+source $(dirname $0)/../vendor/shunit.inc
