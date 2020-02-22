@@ -1,3 +1,19 @@
+help() {
+  echo "$(basename "$0") [options] <file>"
+  echo "  -C   dump configuration"
+  echo "  -c   show command"
+  echo "  -h   help"
+  echo "  -m   show mimetype"
+  echo "  -n   dry run"
+  echo "  -v   verbose"
+  echo "  -V   version"
+}
+
+version() {
+  echo "lopen version ${VERSION}"
+  echo "https://www.github.com/jonhiggs/lopen"
+}
+
 dump_config() {
   echo "ENVIRONMENT:"
   ( echo "LOPEN_BROWSER:	${LOPEN_BROWSER}"

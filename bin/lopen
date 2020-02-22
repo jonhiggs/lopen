@@ -19,21 +19,6 @@ LOPEN_SHOW_MIMETYPE=false
 
 [[ -f ${LOPEN_CONFIG} ]] && source "${LOPEN_CONFIG}"
 
-help() {
-  echo "$(basename "$0") [options] <file>"
-  echo "  -C   dump configuration"
-  echo "  -c   show command"
-  echo "  -h   help"
-  echo "  -m   show mimetype"
-  echo "  -n   dry run"
-  echo "  -v   verbose"
-  echo "  -V   version"
-}
-
-version() {
-  echo "lopen version ${VERSION}"
-}
-
 if [[ $# -gt 1 ]]; then
   f=${!#}
   a=$(echo -- "${@%$f}" | tr -d "[:blank:]-")
