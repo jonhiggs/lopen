@@ -6,13 +6,17 @@ function oneTimeSetUp() {
 }
 
 testMailcapCmd() {
-  assertEquals "text/markdown"  "markdown_cmd %s"   "$(mailcap_cmd 'text/markdown')"
-  assertEquals "text/plain"     "plaintext_cmd %s"  "$(mailcap_cmd 'text/plain')"
+  c="mailcap_cmd"
+  assertEquals "text/markdown"  "markdown_cmd %s"   "$($c 'text/markdown')"
+  assertEquals "text/plain"     "plaintext_cmd %s"  "$($c 'text/plain')"
+  assertEquals "image/jpeg"     "jpeg_viewer %s"    "$($c 'image/jpeg')"
+  assertEquals "image/png"      "image_viewer %s"   "$($c 'image/png')"
 }
 
 testMailcapFlags() {
-  assertEquals "text/markdown"  "copiousoutput"   "$(mailcap_flags 'text/markdown')"
-  assertEquals "text/plain"     ""                "$(mailcap_flags 'text/plain')"
+  c="mailcap_flags"
+  assertEquals "text/markdown"  "copiousoutput"     "$($c 'text/markdown')"
+  assertEquals "text/plain"     ""                  "$($c 'text/plain')"
 }
 
 source $(dirname $0)/../vendor/shunit.inc

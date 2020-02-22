@@ -1,2 +1,4 @@
 text/markdown; markdown_cmd %s; copiousoutput
 text/plain; plaintext_cmd %s
+image/jpeg; jpeg_viewer %s
+image/*; image_viewer %s
