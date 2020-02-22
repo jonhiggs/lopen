@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 source $(dirname $0)/../lib/functions.inc
+source $(dirname $0)/../lib/mailcap.inc
+source $(dirname $0)/../lib/file.inc
 
 LOPEN_PAGER="less"
 
@@ -34,13 +36,13 @@ testInputType() {
   assertFalse  "blah:// status"                         "input_type 'blah://www.google.com' >&/dev/null"
 }
 
-testMimetype() {
-  assertEquals "$(basename ${TXTFILE})"       "text/plain"    "$(mimetype "${TXTFILE}")"
-  assertEquals "$(basename ${MDFILE})"        "text/markdown" "$(mimetype "${MDFILE}")"
-  assertEquals "$(basename ${MKDFILE})"       "text/markdown" "$(mimetype "${MKDFILE}")"
-  assertEquals "$(basename ${MARKDOWNFILE})"  "text/markdown" "$(mimetype "${MARKDOWNFILE}")"
-  assertEquals "$(basename ${NFOFILE})"       "text/plain"    "$(mimetype "${NFOFILE}")"
-  assertEquals "$(basename ${TXTSYMLINK})"    "text/plain"    "$(mimetype "${TXTSYMLINK}")"
+testFileMimetype() {
+  assertEquals "$(basename ${TXTFILE})"       "text/plain"    "$(file_mimetype "${TXTFILE}")"
+  assertEquals "$(basename ${MDFILE})"        "text/markdown" "$(file_mimetype "${MDFILE}")"
+  assertEquals "$(basename ${MKDFILE})"       "text/markdown" "$(file_mimetype "${MKDFILE}")"
+  assertEquals "$(basename ${MARKDOWNFILE})"  "text/markdown" "$(file_mimetype "${MARKDOWNFILE}")"
+  assertEquals "$(basename ${NFOFILE})"       "text/plain"    "$(file_mimetype "${NFOFILE}")"
+  assertEquals "$(basename ${TXTSYMLINK})"    "text/plain"    "$(file_mimetype "${TXTSYMLINK}")"
 }
 
 testMailcapCmd() {

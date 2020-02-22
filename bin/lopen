@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # shellcheck source=../lib/functions.inc.sh
 source "$(dirname "$0")"/../lib/functions.inc
+source "$(dirname "$0")"/../lib/mailcap.inc
+source "$(dirname "$0")"/../lib/file.inc
+
 VERSION="[dev]"
 
 ### END FRONTMATTER ###

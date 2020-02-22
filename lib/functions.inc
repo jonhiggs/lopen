@@ -52,35 +52,6 @@ forced_mimetype() {
   echo "$t"
 }
 
-mimetype() {
-  forced_mimetype "$1" && return 0
-  mimetype=$(file --mime-type "$1" | awk -F: '{gsub(/^ +/,"", $2);print $2}')
-  extension=${1##*.}
-
-  case ${mimetype} in
-    "text/plain")
-      case ${extension} in
-        md|markdown|mkd) mimetype='text/markdown' ;;
-      esac
-      ;;
-    "inode/symlink") mimetype=$(mimetype "$(readlink -f "$1")") ;;
-  esac
-
-  echo "${mimetype}"
-}
-
-mailcap_cmd() {
-  awk -F\; -v M="$1" \
-    '($1~M) {gsub(/^ +/, "", $2); print $2}' \
-    < "${LOPEN_MAILCAP_FILE}"
-}
-
-mailcap_flags() {
-  awk -F\; -v M="$1" \
-    '($1~M) {gsub(/^ +/, "", $3); print $3}' \
-    < "${LOPEN_MAILCAP_FILE}"
-}
-
 cmd() {
   local t
   local c
@@ -88,7 +59,7 @@ cmd() {
   t=$(input_type "$1" 2> /dev/null)
   [[ -z $t ]] && return 1
   if [[ $t == "file" ]]; then
-    m=$(mimetype "$1")
+    m=$(file_mimetype "$1")
     c="$(mailcap_cmd "$m" | awk -v file="$1" '{gsub(/%s/,file,$0)}; {print}')"
     [[ $(mailcap_flags "$m") =~ copiousoutput ]] && c+="|${LOPEN_PAGER}"
     echo "$c"
@@ -97,10 +68,3 @@ cmd() {
   fi
 }
 
-unwrap_file() {
-  local f
-  f=$1
-  while [[ -S "$f" ]]; do f=$(readlink "$f"); done
-  [[ -f $f ]] || return 1
-  echo "$f"
-}
