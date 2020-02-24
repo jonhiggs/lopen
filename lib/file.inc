@@ -1,8 +1,11 @@
 # these functions expect a file as input
-source $(dirname "${BASH_SOURCE[0]}")/mailcap.inc
+LIB_DIR="$(dirname "${BASH_SOURCE[0]}")"
+
+# shellcheck source=./lib/mailcap.inc
+source "${LIB_DIR}/mailcap.inc"
 
 file_cmd() {
-  f="$(_file_expand $1)"
+  f="$(_file_expand "$1")"
   m=$(file_mimetype "$f")
   c="$(mailcap_cmd "$m")"
   c="$(echo "$c" | awk -v f="$f" '{gsub(/%s/,f,$0)}; {print}')"
@@ -13,7 +16,7 @@ file_cmd() {
 
 file_mimetype() {
   # FIXME: deal with missing mimetype files
-  cat ${LOPEN_MIMETYPES} ${HOME}/.mime.types /etc/mime.types \
+  cat "${LOPEN_MIMETYPES}" "${HOME}/.mime.types" /etc/mime.types \
     | awk -v ext="${1##*.}" \
       '/^[^#]/ {
         for (i=2; i<=NF; ++i) {
@@ -23,9 +26,9 @@ file_mimetype() {
 }
 
 _file_expand() {
-  if [[ -L $1 ]]; then
-    _file_expand $(readlink -f $1)
+  if [[ -L "$1" ]]; then
+    _file_expand "$(readlink -f "$1")"
   else
-    readlink -f $1
+    readlink -f "$1"
   fi
 }

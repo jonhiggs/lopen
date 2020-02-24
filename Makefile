@@ -1,4 +1,4 @@
-VERSION := 0.0.3
+VERSION := 0.0.4
 
 target/lopen: lib/functions.inc bin/lopen .FORCE
 	echo '#!/usr/bin/env bash' >$@
@@ -14,5 +14,6 @@ test:
 	./test/test_file
 	./test/test_mailcap
 	./test/test_integration
+	shellcheck ./bin/lopen
 
 .FORCE:

@@ -1,5 +1,8 @@
 # these functions expect a file as input
-source $(dirname "${BASH_SOURCE[0]}")/mailcap.inc
+LIB_DIR="$(dirname "${BASH_SOURCE[0]}")"
+
+# shellcheck source=./lib/mailcap.inc
+source "${LIB_DIR}/mailcap.inc"
 
 uri_cmd() {
   m=$(file_mimetype "$1")
@@ -11,7 +14,7 @@ uri_cmd() {
 }
 
 _uri_valid_scheme() {
-  for s in ${LOPEN_SCHEMES[@]}; do
+  for s in "${LOPEN_SCHEMES[@]}"; do
     [[ $s == "$1" ]] && return 0
   done
   return 1
@@ -19,7 +22,7 @@ _uri_valid_scheme() {
 
 _uri_scheme() {
   if [[ $1 =~ ^[a-z]+:// ]]; then
-    echo $1 | cut -d: -f1
+    echo "$1" | cut -d: -f1
   elif [[ ! $1 =~ ^[a-z]+:// ]]; then
     echo "http"
   fi

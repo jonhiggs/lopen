@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
-# shellcheck source=../lib/functions.inc.sh
-source "$(dirname "$0")"/../lib/functions.inc
-source "$(dirname "$0")"/../lib/mailcap.inc
-source "$(dirname "$0")"/../lib/file.inc
-source "$(dirname "$0")"/../lib/uri.inc
+LIB_DIR="$(dirname "$0")/../lib"
+
+# shellcheck source=./lib/functions.inc
+source "${LIB_DIR}"/functions.inc
+
+# shellcheck source=./lib/mailcap.inc
+source "${LIB_DIR}"/mailcap.inc
+
+# shellcheck source=./lib/file.inc
+source "${LIB_DIR}"/file.inc
+
+# shellcheck source=./lib/uri.inc
+source "${LIB_DIR}"/uri.inc
 
 VERSION="[dev]"
 
@@ -12,7 +20,6 @@ set -e
 
 LOPEN_CONFIG_DIR="${LOPEN_CONFIG_DIR:-${XDG_CONFIG_HOME}/lopen}"
 LOPEN_CONFIG="${LOPEN_CONFIG_DIR}/config"
-LOPEN_FILETYPES="${LOPEN_CONFIG_DIR}/filetypes"
 LOPEN_BROWSER="${LOPEN_BROWSER:-${BROWSER}}"
 LOPEN_PAGER="${LOPEN_PAGER:-${PAGER:-less}}"
 LOPEN_DRY=false
@@ -21,7 +28,8 @@ LOPEN_SCHEMES=(http https ftp)
 LOPEN_SHOW_COMMAND=false
 LOPEN_SHOW_MIMETYPE=false
 
-[[ -f ${LOPEN_CONFIG} ]] && source "${LOPEN_CONFIG}"
+# shellcheck source=/dev/null
+[[ -f "${LOPEN_CONFIG}" ]] && source "${LOPEN_CONFIG}"
 
 if [[ $# -gt 1 ]]; then
   f=${!#}
@@ -44,7 +52,7 @@ fi
 
 input_type=$(input_type "$f")
 
-if [[ "${input_type}" -eq "file" ]]; then
+if [[ "${input_type}" == "file" ]]; then
   cmd=$(file_cmd "$f")
   mimetype=$(file_mimetype "$f")
   mailcap_cmd=$(mailcap_cmd "$mimetype")

@@ -27,7 +27,7 @@ dump_config() {
   ) | column -t -s"	"
 
   echo -e "\nMAILCAP FILE:"
-  cat ${LOPEN_MAILCAP_FILE}
+  cat "${LOPEN_MAILCAP_FILE}"
 }
 
 input_type() {
