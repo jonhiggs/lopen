@@ -1,11 +1,12 @@
 VERSION := 0.0.4
+libs = $(wildcard ./lib/*.inc)
 
-target/lopen: lib/functions.inc bin/lopen .FORCE
+target/lopen: bin/lopen $(libs) .FORCE
 	echo '#!/usr/bin/env bash' >$@
-	cat $(word 1,$^) >>$@
+	cat $(libs) >>$@
 	echo VERSION=${VERSION} >>$@
-	cat $(word 2,$^) | awk '/### END FRONTMATTER ###/ { n=NR }; (n&&n<NR)' >>$@
-	chmod +x ${@}
+	cat $< | awk '/### END FRONTMATTER ###/ { n=NR }; (n&&n<NR)' >>$@
+	chmod +x $@
 	shellcheck $@ -x -a
 
 .PHONY: test
