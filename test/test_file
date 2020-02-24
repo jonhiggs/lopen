@@ -3,7 +3,7 @@ source $(dirname $0)/../lib/file.inc
 
 function oneTimeSetUp() {
   LOPEN_MAILCAP_FILE=$(dirname $0)/testfiles/mailcap
-  LOPEN_FILETYPES=$(dirname $0)/testfiles/filetypes
+  LOPEN_MIMETYPES=$(dirname $0)/testfiles/mime.types
   TXTSYMLINK=$(dirname $0)/testfiles/symlink.txt
   TXTFILE=$(dirname $0)/testfiles/test.txt
   MDFILE=$(dirname $0)/testfiles/test.md
@@ -22,19 +22,20 @@ testFileMimetype() {
   assertEquals "$(basename ${TXTSYMLINK})"    "text/plain"    "$(file_mimetype "${TXTSYMLINK}")"
 }
 
-testFileForcedMimetype() {
-  assertEquals ".md"              "text/markdown"           "$(_file_forced_mimetype test.md)"
-  assertEquals ".mkd"             "text/markdown"           "$(_file_forced_mimetype test.mkd)"
-  assertEquals ".markdown"        "text/markdown"           "$(_file_forced_mimetype test.markdown)"
-  assertEquals ".nfo"             "text/plain"              "$(_file_forced_mimetype test.nfo)"
-  assertEquals ".m"               ""                        "$(_file_forced_mimetype test.m)"
-  assertEquals ".g"               ""                        "$(_file_forced_mimetype test.g)"
-}
-
 testFileCmd() {
   c="file_cmd"
   assertEquals "plaintext_cmd %s"     "plaintext_cmd ${TXTFILE}"   "$($c ${TXTFILE})"
-file  assertEquals "mimetype_cmd %t %s"   "mimetype_cmd application/msword ${DOCFILE}"   "$($c ${DOCFILE})"
+  assertEquals "mimetype_cmd %t %s"   "mimetype_cmd application/msword ${DOCFILE}"   "$($c ${DOCFILE})"
 }
+
+testMimeTypes() {
+  assertEquals ".md"           "text/markdown"           "$(_file_mimetype test.md)"
+  assertEquals ".mkd"          "text/markdown"           "$(_file_mimetype test.mkd)"
+  assertEquals ".markdown"     "text/markdown"           "$(_file_mimetype test.markdown)"
+  assertEquals ".nfo"          "text/plain"              "$(_file_mimetype test.nfo)"
+  assertEquals ".g"            ""                        "$(_file_mimetype test.g)"
+  assertEquals ".doc"          "application/msword"      "$(_file_mimetype test.doc)"
+}
+
 
 source $(dirname $0)/../vendor/shunit.inc
