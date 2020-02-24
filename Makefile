@@ -6,7 +6,7 @@ target/lopen: lib/functions.inc bin/lopen .FORCE
 	echo VERSION=${VERSION} >>$@
 	cat $(word 2,$^) | awk '/### END FRONTMATTER ###/ { n=NR }; (n&&n<NR)' >>$@
 	chmod +x ${@}
-	shellcheck $@
+	shellcheck $@ -x -a
 
 .PHONY: test
 test:
@@ -14,6 +14,6 @@ test:
 	./test/test_file
 	./test/test_mailcap
 	./test/test_integration
-	shellcheck ./bin/lopen
+	shellcheck ./bin/lopen -x -a
 
 .FORCE:
