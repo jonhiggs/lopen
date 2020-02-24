@@ -13,5 +13,6 @@ test:
 	./test/test
 	./test/test_file
 	./test/test_mailcap
+	./test/test_integration
 
 .FORCE:

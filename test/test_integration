@@ -28,33 +28,27 @@ testNonExistentFile() {
 
 testReadmeMd() {
   f="${ROOT_DIR}/README.md"
-  assertEquals "command"     "markdown_cmd ${f}|less"   "$(${CMD} -nv $f | awk -F: '/^command:/ { gsub(/^\s*/, "", $2); print $2 }')"
+  assertEquals "command"     "markdown_cmd $(readlink -f $f)|less"   "$(${CMD} -nv $f | awk -F: '/^command:/ { gsub(/^\s*/, "", $2); print $2 }')"
   assertEquals "mailcap"     "markdown_cmd %s"          "$(${CMD} -nv $f | awk -F: '/^mailcap:/ { gsub(/^\s*/, "", $2); print $2 }')"
   assertEquals "mimetype"    "text/markdown"            "$(${CMD} -nv $f | awk -F: '/^mimetype:/ { gsub(/^\s*/, "", $2); print $2 }')"
   assertTrue   "exit status"                            "${CMD} -nv $f"
 }
 
-testHttpURL() {
-  url="http://www.google.com/"
-  assertEquals "command"     "${LOPEN_BROWSER} ${url}"  "$(${CMD} -nv ${url} | awk -F: '/^command:/ { gsub(/^\s*/, "", $2); print $2 }')"
-  #assertEquals "mailcap"     "markdown_cmd %s"          "$(${CMD} -nv $f | awk -F: '/^mailcap:/ { gsub(/^\s*/, "", $2); print $2 }')"
-  #assertEquals "mimetype"    "text/markdown"            "$(${CMD} -nv $f | awk -F: '/^mimetype:/ { gsub(/^\s*/, "", $2); print $2 }')"
-  #assertTrue   "exit status"                            "${CMD} -nv $f"
+testSymlinkTxt() {
+  f="${ROOT_DIR}/test/testfiles/symlink.txt"
+  assertEquals "command"     "plaintext_cmd $(readlink -f $f)"   "$(${CMD} -nv $f | awk -F: '/^command:/ { gsub(/^\s*/, "", $2); print $2 }')"
+  assertEquals "mailcap"     "plaintext_cmd %s"                  "$(${CMD} -nv $f | awk -F: '/^mailcap:/ { gsub(/^\s*/, "", $2); print $2 }')"
+  assertEquals "mimetype"    "text/plain"                        "$(${CMD} -nv $f | awk -F: '/^mimetype:/ { gsub(/^\s*/, "", $2); print $2 }')"
+  assertTrue   "exit status"                                     "${CMD} -nv $f"
 }
 
-#  assertEquals "nonexistent file"   ""                  "$(input_type xxx)"
-#  assertEquals "http://"            "http"              "$(input_type "http://www.google.com")"
-#  assertEquals "ftp://"             "ftp"               "$(input_type "ftp://www.google.com")"
-#  assertEquals "https://"           "https"             "$(input_type "https://www.google.com")"
-#  assertEquals "blah:// stderr"     "unknown protocol"  "$(input_type "blah://www.google.com" 2>&1)"
-#  assertEquals "blah:// stdout"     ""                  "$(input_type "blah://www.google.com" 2>/dev/null)"
-#
-#  assertTrue   "existent file returns true"             "input_type ${TXTFILE}"
-#  assertFalse  "nonexistent file returns false"         "input_type xxx"
-#  assertTrue   "https:// status"                        "input_type 'https://www.google.com'"
-#  assertTrue   "http:// status"                         "input_type 'http://www.google.com'"
-#  assertTrue   "ftp:// status"                          "input_type 'ftp://www.google.com'"
-#  assertFalse  "blah:// status"                         "input_type 'blah://www.google.com' >&/dev/null"
+#testHttpURL() {
+#  url="http://www.google.com/"
+#  assertEquals "command"     "${LOPEN_BROWSER} ${url}"  "$(${CMD} -nv ${url} | awk -F: '/^command:/ { gsub(/^\s*/, "", $2); print $2 }')"
+#  assertEquals "mailcap"     "N/A"          "$(${CMD} -nv ${url} | awk -F: '/^mailcap:/ { gsub(/^\s*/, "", $2); print $2 }')"
+#  assertEquals "mimetype"    "N/A"            "$(${CMD} -nv ${url} | awk -F: '/^mimetype:/ { gsub(/^\s*/, "", $2); print $2 }')"
+#  #assertTrue   "exit status"                            "${CMD} -nv $f"
+#}
 
 
 # load and run shUnit2

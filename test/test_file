@@ -24,17 +24,17 @@ testFileMimetype() {
 
 testFileCmd() {
   c="file_cmd"
-  assertEquals "plaintext_cmd %s"     "plaintext_cmd ${TXTFILE}"   "$($c ${TXTFILE})"
-  assertEquals "mimetype_cmd %t %s"   "mimetype_cmd application/msword ${DOCFILE}"   "$($c ${DOCFILE})"
+  assertEquals "plaintext_cmd %s"     "plaintext_cmd $(readlink -f ${TXTFILE})"   "$($c ${TXTFILE})"
+  assertEquals "mimetype_cmd %t %s"   "mimetype_cmd application/msword $(readlink -f ${DOCFILE})"   "$($c ${DOCFILE})"
 }
 
 testMimeTypes() {
-  assertEquals ".md"           "text/markdown"           "$(_file_mimetype test.md)"
-  assertEquals ".mkd"          "text/markdown"           "$(_file_mimetype test.mkd)"
-  assertEquals ".markdown"     "text/markdown"           "$(_file_mimetype test.markdown)"
-  assertEquals ".nfo"          "text/plain"              "$(_file_mimetype test.nfo)"
-  assertEquals ".g"            ""                        "$(_file_mimetype test.g)"
-  assertEquals ".doc"          "application/msword"      "$(_file_mimetype test.doc)"
+  assertEquals ".md"           "text/markdown"           "$(file_mimetype test.md)"
+  assertEquals ".mkd"          "text/markdown"           "$(file_mimetype test.mkd)"
+  assertEquals ".markdown"     "text/markdown"           "$(file_mimetype test.markdown)"
+  assertEquals ".nfo"          "text/plain"              "$(file_mimetype test.nfo)"
+  assertEquals ".g"            ""                        "$(file_mimetype test.g)"
+  assertEquals ".doc"          "application/msword"      "$(file_mimetype test.doc)"
 }
 
 
