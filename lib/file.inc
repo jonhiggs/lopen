@@ -1,6 +1,8 @@
 # these functions expect a file as input
 LIB_DIR="$(dirname "${BASH_SOURCE[0]}")"
 
+source "${LIB_DIR}/realpath.inc"
+
 # shellcheck source=./lib/mailcap.inc
 source "${LIB_DIR}/mailcap.inc"
 

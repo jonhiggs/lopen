@@ -21,12 +21,13 @@ testFileMimetype() {
   assertEquals "$(basename ${MARKDOWNFILE})"  "text/markdown" "$(file_mimetype "${MARKDOWNFILE}")"
   assertEquals "$(basename ${NFOFILE})"       "text/plain"    "$(file_mimetype "${NFOFILE}")"
   assertEquals "$(basename ${TXTSYMLINK})"    "text/plain"    "$(file_mimetype "${TXTSYMLINK}")"
+  assertEquals "$(basename ${DOCFILE})"       "application/msword"    "$(file_mimetype "${DOCFILE}")"
 }
 
 testFileCmd() {
   c="file_cmd"
-  assertEquals "plaintext_cmd %s"     "plaintext_cmd $(readlink ${TXTFILE})"   "$($c ${TXTFILE})"
-  assertEquals "mimetype_cmd %t %s"   "mimetype_cmd application/msword $(readlink ${DOCFILE})"   "$($c ${DOCFILE})"
+  assertEquals "plaintext_cmd %s"     "plaintext_cmd $(realpath ${TXTFILE})"                     "$($c ${TXTFILE})"
+  assertEquals "mimetype_cmd %t %s"   "mimetype_cmd application/msword $(realpath ${DOCFILE})"   "$($c ${DOCFILE})"
 }
 
 testMimeTypes() {

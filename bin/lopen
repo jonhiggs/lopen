@@ -13,6 +13,9 @@ source "${LIB_DIR}"/file.inc
 # shellcheck source=./lib/uri.inc
 source "${LIB_DIR}"/uri.inc
 
+# shellcheck source=/dev/null
+source "${LIB_DIR}"/realpath.inc
+
 VERSION="[dev]"
 
 ### END FRONTMATTER ###

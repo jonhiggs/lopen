@@ -2,41 +2,44 @@
 source $(dirname $0)/../lib/functions.inc
 source $(dirname $0)/../lib/mailcap.inc
 source $(dirname $0)/../lib/file.inc
+source $(dirname $0)/../lib/realpath.inc
 
 LOPEN_PAGER="less"
 LOPEN_BROWSER="my_browser"
 LOPEN_SCHEMES=(http https ftp)
 
 function oneTimeSetUp() {
-  LOPEN_MAILCAP_FILE=$(dirname $0)/testfiles/mailcap
-  LOPEN_FILETYPES=$(dirname $0)/testfiles/filetypes
+  export LOPEN_MAILCAP_FILE=$(dirname $0)/testfiles/mailcap
+  export LOPEN_MIMETYPES=$(dirname $0)/testfiles/mime.types
+  export LOPEN_FILETYPES=$(dirname $0)/testfiles/filetypes
+  export LOPEN_CONFIG_DIR="${ROOT_DIR}/test/testfiles"
 
   ROOT_DIR="$(dirname $0)/../"
   CMD="${ROOT_DIR}/bin/lopen"
-  export LOPEN_CONFIG_DIR="${ROOT_DIR}/test/testfiles"
 }
 
 testConfiguration() {
   assertEquals "LOPEN_CONFIG"       "testfiles"         "$(${CMD} -C | awk -F'/' '/LOPEN_CONFIG:/ { print $(NF-1) }')"
+  assertTrue   "LOPEN_MIMETYPES is set"                 "[[ -n "$(${CMD} -C | awk -F'/' '/LOPEN_MIMETYPES:/ { print $2 }')" ]]"
 }
 
 testNonExistentFile() {
   f="${ROOT_DIR}/xxx"
-  assertEquals "empty response"   ""       "$(${CMD} $f)"
-  assertFalse  "exit status"               "${CMD} $f"
+  assertEquals "empty response"   ""                    "$(${CMD} $f)"
+  assertFalse  "exit status"                            "${CMD} $f"
 }
 
 testReadmeMd() {
   f="${ROOT_DIR}/README.md"
-  assertEquals "command"     "markdown_cmd $(readlink -f $f)|less"   "$(${CMD} -nv $f | awk -F: '/^command:/ { gsub(/^\s*/, "", $2); print $2 }')"
-  assertEquals "mailcap"     "markdown_cmd %s"          "$(${CMD} -nv $f | awk -F: '/^mailcap:/ { gsub(/^\s*/, "", $2); print $2 }')"
-  assertEquals "mimetype"    "text/markdown"            "$(${CMD} -nv $f | awk -F: '/^mimetype:/ { gsub(/^\s*/, "", $2); print $2 }')"
-  assertTrue   "exit status"                            "${CMD} -nv $f"
+  assertEquals "command"     "markdown_cmd $(realpath $f)|less"   "$(${CMD} -nv $f | awk -F: '/^command:/ { gsub(/^\s*/, "", $2); print $2 }')"
+  assertEquals "mailcap"     "markdown_cmd %s"                    "$(${CMD} -nv $f | awk -F: '/^mailcap:/ { gsub(/^\s*/, "", $2); print $2 }')"
+  assertEquals "mimetype"    "text/markdown"                      "$(${CMD} -nv $f | awk -F: '/^mimetype:/ { gsub(/^\s*/, "", $2); print $2 }')"
+  assertTrue   "exit status"                                      "${CMD} -nv $f"
 }
 
 testSymlinkTxt() {
   f="${ROOT_DIR}/test/testfiles/symlink.txt"
-  assertEquals "command"     "plaintext_cmd $(readlink -f $f)"   "$(${CMD} -nv $f | awk -F: '/^command:/ { gsub(/^\s*/, "", $2); print $2 }')"
+  assertEquals "command"     "plaintext_cmd $(realpath $f)"      "$(${CMD} -nv $f | awk -F: '/^command:/ { gsub(/^\s*/, "", $2); print $2 }')"
   assertEquals "mailcap"     "plaintext_cmd %s"                  "$(${CMD} -nv $f | awk -F: '/^mailcap:/ { gsub(/^\s*/, "", $2); print $2 }')"
   assertEquals "mimetype"    "text/plain"                        "$(${CMD} -nv $f | awk -F: '/^mimetype:/ { gsub(/^\s*/, "", $2); print $2 }')"
   assertTrue   "exit status"                                     "${CMD} -nv $f"
