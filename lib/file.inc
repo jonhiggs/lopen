@@ -5,7 +5,7 @@ LIB_DIR="$(dirname "${BASH_SOURCE[0]}")"
 source "${LIB_DIR}/mailcap.inc"
 
 file_cmd() {
-  f="$(_file_expand "$1")"
+  f="$(realpath "$1")"
   m=$(file_mimetype "$f")
   c="$(mailcap_cmd "$m")"
   c="$(echo "$c" | awk -v f="$f" '{gsub(/%s/,f,$0)}; {print}')"
@@ -23,12 +23,4 @@ file_mimetype() {
           if ($i==ext) { print $1; exit 0 }
         }
       }'
-}
-
-_file_expand() {
-  if [[ -L "$1" ]]; then
-    _file_expand "$(readlink -f "$1")"
-  else
-    readlink -f "$1"
-  fi
 }

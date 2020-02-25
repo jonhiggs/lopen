@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 source $(dirname $0)/../lib/file.inc
+source $(dirname $0)/../lib/realpath.inc
 
 function oneTimeSetUp() {
   LOPEN_MAILCAP_FILE=$(dirname $0)/testfiles/mailcap
@@ -24,8 +25,8 @@ testFileMimetype() {
 
 testFileCmd() {
   c="file_cmd"
-  assertEquals "plaintext_cmd %s"     "plaintext_cmd $(readlink -f ${TXTFILE})"   "$($c ${TXTFILE})"
-  assertEquals "mimetype_cmd %t %s"   "mimetype_cmd application/msword $(readlink -f ${DOCFILE})"   "$($c ${DOCFILE})"
+  assertEquals "plaintext_cmd %s"     "plaintext_cmd $(readlink ${TXTFILE})"   "$($c ${TXTFILE})"
+  assertEquals "mimetype_cmd %t %s"   "mimetype_cmd application/msword $(readlink ${DOCFILE})"   "$($c ${DOCFILE})"
 }
 
 testMimeTypes() {
