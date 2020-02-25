@@ -15,9 +15,9 @@ file_cmd() {
 }
 
 file_mimetype() {
-  # FIXME: deal with missing mimetype files
-  cat "${LOPEN_MIMETYPES}" "${HOME}/.mime.types" /etc/mime.types \
-    | awk -v ext="${1##*.}" \
+  for f in ${LOPEN_MIMETYPES} "${HOME}/.mime.types" "/etc/mimetypes"; do
+    [[ -f "$f" ]] && cat $f
+  done | awk -v ext="${1##*.}" \
       '/^[^#]/ {
         for (i=2; i<=NF; ++i) {
           if ($i==ext) { print $1; exit 0 }
